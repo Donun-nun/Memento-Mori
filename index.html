@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 인생 타임라인</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 10px;
+            background-color: white;
+            color: black;
+        }
+        h1 {
+            text-align: center;
+            font-size: 1.5em;
+        }
+        .timeline-container {
+            margin: 10px auto;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        #timeline {
+            display: grid;
+            grid-template-columns: repeat(52, 1fr);
+            gap: 1px;
+            min-width: 780px; /* 최소 너비 설정 */
+        }
+        .week {
+            aspect-ratio: 1;
+            background-color: #e0e0e0;
+            border: 1px solid #ffffff;
+        }
+        .week.passed {
+            background-color: #000000;
+        }
+        #info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 5px;
+            }
+            h1 {
+                font-size: 1.2em;
+            }
+            #info {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>내 인생 타임라인</h1>
+    <div class="timeline-container">
+        <div id="timeline"></div>
+    </div>
+    <div id="info"></div>
+
+    <script>
+        const startDate = new Date(2000, 0, 1);
+        const birthDate = new Date(2000, 2, 27);
+        const endDate = new Date(2080, 11, 31);
+        const today = new Date();
+
+        const timeline = document.getElementById('timeline');
+
+        const totalWeeks = 52 * 80; // 80년
+
+        for (let i = 0; i < totalWeeks; i++) {
+            const weekDiv = document.createElement('div');
+            weekDiv.className = 'week';
+            
+            const currentDate = new Date(startDate.getTime() + i * 7 * 24 * 60 * 60 * 1000);
+            if (currentDate >= birthDate && currentDate <= today) {
+                weekDiv.classList.add('passed');
+            }
+            
+            timeline.appendChild(weekDiv);
+        }
+
+        const info = document.getElementById('info');
+        const weeksLived = Math.floor((today - birthDate) / (7 * 24 * 60 * 60 * 1000));
+        const yearsLived = (weeksLived / 52).toFixed(2);
+        const weeksLeft = Math.floor((endDate - today) / (7 * 24 * 60 * 60 * 1000));
+        const yearsLeft = (weeksLeft / 52).toFixed(2);
+        info.innerHTML = `
+            <p>당신은 지금까지 ${yearsLived}년 (${weeksLived}주)을 살았습니다.</p>
+            <p>2080년까지 ${yearsLeft}년 (${weeksLeft}주)가 남았습니다.</p>
+        `;
+    </script>
+</body>
+</html>
